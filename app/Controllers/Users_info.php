@@ -79,14 +79,15 @@ class Users_info extends BaseController
     }
 
     public function profile(){
-
-
-        // $session = session();
-        // // echo "Hello : ".$session->get('email');
-
-        // echo "<pre>";
-        // print_r($session->get('name'));
-
         return view('auth/profile');
     }
+
+    public function logout()
+    {
+        $session = session();
+        $session->remove('user_id');
+        return redirect()->to('/'); // Redirect to the login page after logout
+    }
+
+
 }
