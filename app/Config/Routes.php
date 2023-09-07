@@ -17,3 +17,7 @@ use CodeIgniter\Router\RouteCollection;
 // for Login 
 
 $routes->get('/', 'Users_info::index');
+
+$routes->post('/loginAuth', 'Users_info::loginAuth');
+
+$routes->get('/profile', 'Users_info::profile');

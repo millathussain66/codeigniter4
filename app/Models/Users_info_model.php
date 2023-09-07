@@ -6,5 +6,5 @@ class Users_info_model extends Model
 {
     protected $table = 'users_info';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['email','password_log'];
+    protected $allowedFields = ['email_address','password'];
 }

@@ -18,18 +18,37 @@
             <div class="card-body">
                 <h3 class="card-title text-center">Sign In</h3>
                 <div class="card-text">
-<!--                     
-			<div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
-                    <form action="" method="post">
+                    <?php $validation = \Config\Services::validation(); ?>
+
+
+                    <?php if ($validation->getError('email_address')) { ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert"> <?= $error = $validation->getError('email_address'); ?></div>
+                    <?php } ?>
+
+                    <?php if ($validation->getError('password')) { ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert"> <?= $error = $validation->getError('password'); ?></div>
+                    <?php } ?>
+
+                    <?php $session = session(); ?>
+                    <?php if ($session->has('message')) : ?>
+                        <div class="alert alert-success"><?= $session->getFlashdata('message') ?></div>
+                    <?php endif; ?>
+
+
+
+
+
+                    <form action="<?php echo base_url('loginAuth') ?>" method="post">
+                        <input type="hidden" value="<?= csrf_hash(); ?>" name="<?= csrf_token(); ?>" id="csrf">
                         <!-- to error: add class "has-danger" -->
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <label for="email_address">Email address</label>
+                            <input type="email" class="form-control form-control-sm" id="email_address" name="email_address" aria-describedby="emailHelp">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                       
-                            <input type="password" class="form-control form-control-sm" id="exampleInputPassword1">
+                            <label for="password">Password</label>
+
+                            <input type="password" class="form-control form-control-sm" id="password" name="password">
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Sign in</button>
 
