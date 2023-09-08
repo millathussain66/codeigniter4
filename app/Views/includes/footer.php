@@ -9,7 +9,7 @@
         text-align: center;
     }
 </style>
-
+</div>
 <div class="footer">This footer will always be positioned at the bottom of the page, but <strong>fixed</strong>.</div>
 
 </body>

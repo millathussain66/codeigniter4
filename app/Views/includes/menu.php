@@ -1,61 +1,92 @@
-<div id='content'>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Create a jqxMenu
-            $("#jqxMenu").jqxMenu({
-                width: '310',
-                height: '30',
-                mode: 'horizontal',
-                showTopLevelArrows: true
-            });
-            // Set up the open directions.
-            $("#jqxMenu").jqxMenu('setItemOpenDirection', 'Services', 'left', 'down');
-            $("#jqxMenu").jqxMenu('setItemOpenDirection', 'ContactUs', 'left', 'down');
-            $("#jqxMenu").jqxMenu('setItemOpenDirection', 'AboutMe', 'left', 'down');
-            $("#jqxMenu").css('visibility', 'visible');
-        });
-    </script>
+<?php
+$session = session(); ?>
 
-    <div id='jqxWidget' style='margin-top: 50px;'>
-        <div id='jqxMenu' style="visibility: hidden;">
-            <ul>
-                <li style="width: 80px;"><a href="#">About Us</a>
-                    <ul>
-                        <li><a href="#">History</a></li>
-                        <li><a href="#">Our Vision</a></li>
-                        <li><a href="#">The Team</a>
-                            <ul>
-                                <li><a href="#">Brigita</a></li>
-                                <li><a href="#">John</a></li>
-                                <li><a href="#">Michael</a></li>
-                                <li><a href="#">Peter</a></li>
-                                <li><a href="#">Sarah</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Clients</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">FAQs</a></li>
-                    </ul>
-                </li>
 
-                <li id='ContactUs'><a href="#">Contact Us</a>
-                    <ul>
-                        <li><a href="#">Enquiry Form</a></li>
-                        <li><a href="#">Map &amp; Driving Directions</a></li>
-                        <li><a href="#">Your Feedback</a></li>
-                    </ul>
-                </li>
 
-                <li id='AboutMe'><a href="#">About Us</a>
-                    <ul>
-                        <li><a href="#">Enquiry Form</a></li>
-                        <li><a href="#">Map &amp; Driving Directions</a></li>
-                        <li><a href="#">Your Feedback</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" href="index.html">
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"></a>
     </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
 
-</div>
+
+        <div id='content'>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#jqxMenu").jqxMenu({
+                        width: '100%',
+                        height: '30px'
+                    });
+                    $("#jqxMenu").css('visibility', 'visible');
+
+                    var centerItems = function() {
+                        var firstItem = $($("#jqxMenu ul:first").children()[0]);
+                        firstItem.css('margin-left', 0);
+                        var width = 0;
+                        var borderOffset = 2;
+                        $.each($("#jqxMenu ul:first").children(), function() {
+                            width += $(this).outerWidth(true) + borderOffset;
+                        });
+                        var menuWidth = $("#jqxMenu").outerWidth();
+                        firstItem.css('margin-left', (menuWidth / 2) - (width / 2));
+                    }
+                    centerItems();
+                    $(window).resize(function() {
+                        centerItems();
+                    });
+                });
+            </script>
+            <div style="visibility: hidden;" id='jqxMenu'>
+                <ul>
+                    <li><a href="#Home">Home</a></li>
+                   
+                    <li>Users Manager
+                        <ul>
+                            <li><a href="#PCProducts">Users</a></li>
+                            <li><a href="#MobileProducts">Users Groups</a></li>
+                        </ul>
+                    </li>
+                    <li>Support
+                        <ul style='width: 200px;'>
+                            <li><a href="#SupportHome">Support home</a></li>
+                            <li><a href="#CustomerService">Customer Service</a></li>
+                            <li><a href="#KB">Knowledge base</a></li>
+                            <li><a href="#Books">Books</a></li>
+                            <li><a href="#Training">Training and certification</a></li>
+                            <li><a href="#SupportPrograms">Support programs</a></li>
+                            <li><a href="#Forums">Forums</a></li>
+                            <li><a href="#Documentation">Documentation</a></li>
+                            <li><a href="#Updates">Updates</a></li>
+                        </ul>
+                    </li>
+                    <li>Communities
+                        <ul style='width: 200px;'>
+                            <li><a href="#Designers">Designers</a></li>
+                            <li><a href="#Developers">Developers</a></li>
+                            <li><a href="#Educators">Educators and students</a></li>
+                            <li><a href="#Partners">Partners</a></li>
+                            <li type='separator'></li>
+                            <li>By resource</li>
+                        </ul>
+                    </li>
+                    <li>Company
+                        <ul style='width: 180px;'>
+                            <li><a href="#About">About Us</a></li>
+                            <li><a href="#Press">Press</a></li>
+                            <li><a href="#Investor">Investor Relations</a></li>
+                            <li><a href="#CorporateAffairs">Corporate Affairs</a></li>
+                            <li><a href="#Careers">Careers</a></li>
+                            <li><a href="#Showcase">Showcase</a></li>
+                            <li><a href="#Events">Events</a></li>
+                            <li><a href="#ContactUs">Contact Us</a></li>
+                            <li><a href="#Become an affiliate">Become an affiliate</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>
