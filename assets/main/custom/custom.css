@@ -1,0 +1,12 @@
+.ui-datepicker-close {
+    display: none;
+}
+
+.ui-datepicker-current {
+    background: #008F40 !important;
+    color: #fff !important;
+}
+
+.ui-datepicker-current:hover {
+    border-color: #008F40 !important;
+}

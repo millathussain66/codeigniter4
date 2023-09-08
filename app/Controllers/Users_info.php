@@ -16,7 +16,7 @@ class Users_info extends BaseController
 
     public function index(): string
     {
-        
+
         return view('auth/login');
     }
 
@@ -28,21 +28,23 @@ class Users_info extends BaseController
             // 'email'         => 'required|min_length[4]|max_length[100]|valid_email|is_unique[users.email]',
             'password' => 'required|min_length[8]',
         ];
-        if($this->validate($rules)){
+        if ($this->validate($rules)) {
 
             $session = session();
             $userModel = new Users_info_model();
             $email = $this->request->getVar('email_address');
             $password = $this->request->getVar('password');
             $data = $userModel->where(
-                'email_address', $email,
-                'password', $password,
-                )->first();
+                'email_address',
+                $email,
+                'password',
+                $password,
+            )->first();
 
 
             if ($data) {
                 $pass = $data['password'];
-                $authenticatePassword = $pass ===  $password ;
+                $authenticatePassword = $pass ===  $password;
                 // $authenticatePassword = password_verify($pass, $password);
 
                 if ($authenticatePassword) {
@@ -55,30 +57,23 @@ class Users_info extends BaseController
                     ];
                     $session->set($ses_data);
                     return redirect()->to('/profile');
-
-                }else {
+                } else {
                     $session->setFlashdata('message', 'Password is incorrect.');
                     return redirect()->route('/');
                 }
-
-
-            }else{
+            } else {
                 $session->setFlashdata('message', 'Email does not exist.');
                 return redirect()->route('/');
-
-
             }
-
-        }else{
+        } else {
 
             $data['validation'] = $this->validator;
-            return view('auth/login',$data);
+            return view('auth/login', $data);
         }
-
-
     }
 
-    public function profile(){
+    public function profile()
+    {
         return view('auth/profile');
     }
 
@@ -90,4 +85,5 @@ class Users_info extends BaseController
     }
 
 
+   
 }

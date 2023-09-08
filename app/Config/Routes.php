@@ -22,6 +22,4 @@ $routes->get('/profile', 'Users_info::profile', ['filter' => 'auth']);
 $routes->get('/logout', 'Users_info::logout');
 
 
-
-
 $routes->get('/dashboard', 'Dashboard::view');

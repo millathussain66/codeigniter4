@@ -1,20 +1,68 @@
 <script type="text/javascript">
     $(document).ready(function() {
+
+
+        // attach file code
+        var html = '';
+        html += '<img style="cursor:pointer; width:30px;" src="<?= base_url('assets/images/folder.png') ?>" alt="upload" title="Upload" onclick="CustomerPickList(\'cma\',\'app_file\')"/>';
+        html += '<input type="hidden" id="hidden_app_file_select" name="hidden_app_file_select" value="0">';
+        html += '<span id="hidden_app_file">';
+        jQuery('#app_file').html(html);
+
+
+
+
+
+        
+
         var case_fill_dist = ['sdf', 'sdfsf'];
+
+        var req_type = [<?php $i = 1;
+                        foreach ($req_type as $row) {
+                            if ($i != 1) {
+                                echo ',';
+                            }
+                            echo '{value:"' . $row->id . '", label:"' . $row->name . '"}';
+                            $i++;
+                        } ?>];
+        var proposed_type = ["Card", "Loan"];
+        var approver_list = [<?php $i = 1;
+                                foreach ($approver_list as $row) {
+                                    if ($i != 1) {
+                                        echo ',';
+                                    }
+                                    echo '{value:"' . $row->id . '", label:"' . $row->name . '"}';
+                                    $i++;
+                                } ?>];
+
+
         var theme = 'classic';
 
-        jQuery("#case_fill_dist").jqxComboBox({
-            theme: theme,
-            autoOpen: false,
-            autoDropDownHeight: false,
-            promptText: "Case Filing (District)",
-            source: case_fill_dist,
+
+
+        $("#req_type").jqxComboBox({
+            source: req_type,
+            displayMember: "req_type",
+            valueMember: "req_type",
             width: 250,
-            height: 25
+            height: 30,
         });
 
+        $("#proposed_type").jqxComboBox({
+            source: proposed_type,
+            displayMember: "proposed_type",
+            valueMember: "proposed_type",
+            width: 250,
+            height: 30,
+        });
 
-
+        $("#loan_segment").jqxComboBox({
+            source: approver_list,
+            displayMember: "approver_list",
+            valueMember: "approver_list",
+            width: 250,
+            height: 30,
+        });
 
 
 
@@ -45,7 +93,7 @@
                 updaterow: function(rowid, newdata, commit) {
                     commit(true);
                 },
-                url: '<?= base_url() ?>index.php/bill_ait/grid',
+                url: '',
                 cache: false,
                 filter: function() {
                     // update the grid and send a request to the server.
@@ -81,7 +129,7 @@
             };
             jQuery("#jqxgrid").jqxGrid({
                 width: '100%',
-                height: 700,
+                height: 450,
                 source: dataadapter,
                 theme: theme,
                 filterable: true,
@@ -133,12 +181,28 @@
 
         $('#jqxTabs').jqxTabs({
             width: '100%',
-            height: 380,
+            height: 550,
             initTabContent: initWidgets
         });
 
 
+
+
     });
+
+
+    function datePicker(id) {
+        $(document).ready(function() {
+            $('#' + id).datepicker({
+                inline: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                showButtonPanel: true
+            });
+        });
+
+    }
 </script>
 
 <div id='jqxTabs'>
@@ -162,7 +226,7 @@
                 <input type="hidden" id="add_edit" name="add_edit" value="Add">
                 <input type="hidden" id="edit_id" name="edit_id" value="">
 
-                <table style="width:100%;margin-top:20px">
+                <table style="width:100%;margin-top:20px; margin-left:20px;">
                     <tbody>
                         <tr>
                             <td width="50%">
@@ -192,30 +256,12 @@
                                         <td width="60%"><input name="cif" type="text" maxlength="8" size="8" tabindex="4" class="" style="width:250px" id="cif" value="<?= isset($result->cif) ? $result->cif : '' ?>" /></td>
 
                                     </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Branch (SOL)<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="branch_sol" name="branch_sol" style="padding-left: 3px" tabindex="5"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;"><span id="l_or_c_name"></span><span style="color:red">*</span> </td>
-                                        <td width="60%"><input name="ac_name" tabindex="6" type="text" class="" style="width:250px" id="ac_name" value="<?= isset($result->ac_name) ? $result->ac_name : '' ?>" /></td>
-                                    </tr>
+
                                     <tr id="borrower_name_div">
                                         <td width="40%" style="font-weight: bold;">Borrower's Name<span style="color:red">*</span></td>
                                         <td width="60%"><input name="brrower_name" tabindex="7" type="text" class="" style="width:250px" id="brrower_name" value="<?= isset($result->brrower_name) ? $result->brrower_name : '' ?>" /></td>
                                     </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Business Type<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="sub_type" name="sub_type" style="padding-left: 3px" tabindex="8"></div>
-                                            <div style="background-color:#eaeaea;padding:10px;width:233px;display:none" id="spfm">
-                                                Spouse Name<br /><input name="spouse_name" tabindex="9" type="text" class="" style="width:225px" id="spouse_name" value="<?= isset($result->spouse_name) ? $result->spouse_name : '' ?>" /><br />
-                                                Mother Name<span style="color:red">*</span><br /><input name="mother_name" tabindex="10" type="text" class="" style="width:225px" id="mother_name" value="<?= isset($result->mother_name) ? $result->mother_name : '' ?>" />
-                                            </div>
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Loan Segment (Portfolio)<span style="color:red">*</span> </td>
                                         <td width="60%">
@@ -229,32 +275,16 @@
 
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Previous CMA Approval Date</td>
-                                        <td width="60%">
-                                            <label id="pre_cma_app_dt_l">
 
-                                            </label>
-                                            <input type="hidden" tabindex="14" name="pre_cma_app_dt" placeholder="dd/mm/yyyy" style="width:225px;margin-left:4px" id="pre_cma_app_dt" value="<?= isset($result->pre_cma_app_dt) ? date_format(date_create($result->pre_cma_app_dt), "d/m/Y") : '' ?>">
+                                        <td><input type="text" name="pre_cma_app_dt" tabindex="19" placeholder="dd/mm/yyyy" style="width:250px;" id="pre_cma_app_dt" value="<?= isset($result->pre_cma_app_dt) ? date_format(date_create($result->pre_cma_app_dt), "d/m/Y") : '' ?>">
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("pre_cma_app_dt");
+                                            </script>
+                                        </td>
 
-                                        </td>
+
                                     </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Previous Case Status</td>
-                                        <td width="60%">
-                                            <div id="pre_case_sts" tabindex="15" name="pre_case_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Previous Case Type</td>
-                                        <td width="60%">
-                                            <div id="pre_case_type" tabindex="16" name="pre_case_type" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Disposal Status</td>
-                                        <td width="60%">
-                                            <div id="disposal_sts" tabindex="17" name="disposal_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Customer Contact Number</td>
                                         <td width="60%"><input name="mobile_no" tabindex="18" maxlength="11" size="11" type="text" class="" style="width:250px" id="mobile_no" value="<?= isset($result->mobile_no) ? $result->mobile_no : '' ?>" /></td>
@@ -262,13 +292,17 @@
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Chq Expiry Date<span style="color:red">*</span> </td>
                                         <td><input type="text" name="chq_expiry_date" tabindex="19" placeholder="dd/mm/yyyy" style="width:250px;" id="chq_expiry_date" value="<?= isset($result->chq_expiry_date) ? date_format(date_create($result->chq_expiry_date), "d/m/Y") : '' ?>">
-
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("chq_expiry_date");
+                                            </script>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Last Payment Date</td>
                                         <td><input type="text" name="last_payment_date" tabindex="20" placeholder="dd/mm/yyyy" style="width:250px;" id="last_payment_date" value="<?= isset($result->last_payment_date) && $result->last_payment_date != '0000-00-00' ? date_format(date_create($result->last_payment_date), "d/m/Y") : '' ?>">
-
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("last_payment_date");
+                                            </script>
                                         </td>
                                     </tr>
                                     <tr>
@@ -291,119 +325,46 @@
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Call-Up Serving Date</td>
                                         <td><input type="text" name="call_up_serv_dt" tabindex="24" placeholder="dd/mm/yyyy" style="width:250px;" id="call_up_serv_dt" value="<?= isset($result->call_up_serv_dt) && $result->call_up_serv_dt != '0000-00-00 00:00:00' ? date_format(date_create($result->call_up_serv_dt), "d/m/Y") : '' ?>">
-
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("call_up_serv_dt");
+                                            </script>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Loan Sanction Date<span style="color:red">*</span></td>
                                         <td><input type="text" name="loan_sanction_dt" tabindex="25" placeholder="dd/mm/yyyy" style="width:250px;" id="loan_sanction_dt" value="<?= isset($result->loan_sanction_dt) && $result->loan_sanction_dt != '0000-00-00 00:00:00' ? date_format(date_create($result->loan_sanction_dt), "d/m/Y") : '' ?>">
-
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("loan_sanction_dt");
+                                            </script>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Previous Case Filing Date</td>
                                         <td><input type="text" name="pre_case_fill_dt" tabindex="26" placeholder="dd/mm/yyyy" style="width:250px;" id="pre_case_fill_dt" value="<?= isset($result->pre_case_fill_dt) && $result->pre_case_fill_dt != '0000-00-00 00:00:00' ? date_format(date_create($result->pre_case_fill_dt), "d/m/Y") : '' ?>">
-
+                                            <script type="text/javascript" charset="utf-8">
+                                                datePicker("pre_case_fill_dt");
+                                            </script>
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Recovery Region<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="region" tabindex="27" name="region" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Territory<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="territory" tabindex="28" name="territory" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">District<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="district" tabindex="29" name="district" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Unit Office<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="unit_office" tabindex="30" name="unit_office" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Legal Region<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="legal_region" tabindex="31" name="legal_region" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Case Filing (District)<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="case_fill_dist" tabindex="32" name="case_fill_dist" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Security Status<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="sec_sts" tabindex="33" name="sec_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr id="auction_div">
-                                        <td width="40%" style="font-weight: bold;">Previous Auction Status</td>
-                                        <td width="60%">
-                                            <div id="pre_auc_sts" tabindex="34" name="pre_auc_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Business Status<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="busi_sts" tabindex="35" name="busi_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Borrower Status<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="borr_sts" tabindex="36" name="borr_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Sanction Letter<span style="color:green">*</span></td>
-                                        <td width="60%">
-                                            <img style="cursor:pointer" src="<?= base_url() ?>/images/upload.png" alt="upload" title="Upload" onclick="CustomerPickList('cma','senction_letter')" />
-                                            <input type="hidden" id="hidden_senction_letter_select" name="hidden_senction_letter_select" value="0">
-
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Current DPD<span style="color:red">*</span> </td>
                                         <td width="60%"><input name="current_dpd" tabindex="38" type="text" class="" style="width:250px" id="current_dpd" value="<?= isset($result->current_dpd) ? $result->current_dpd : '' ?>" /></td>
                                     </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Logic for ARA Case<span style="color:red">*</span> </td>
-                                        <td width="60%">
-                                            <div id="case_logic" tabindex="39" name="case_logic" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
 
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">More Account Available</td>
-                                        <td width="60%">
-                                            <div name="more_acc" tabindex="40" id="more_acc" style="float:left; margin: 3px 0px 0 0;"></div><input name="more_acc_number" tabindex="41" style="width:228px" type="text" class="" id="more_acc_number" value="<?= isset($result->more_acc_number) ? $result->more_acc_number : '' ?>" disabled /><br /><span style="color:green;" class="login-text">(Comma Separated)</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%" style="font-weight: bold;">Chq. Status<span style="color:red">*</span></td>
-                                        <td width="60%">
-                                            <div id="chq_sts" tabindex="42" name="chq_sts" style="padding-left: 3px"></div>
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td width="40%" style="font-weight: bold;">Remarks <span style="color:green">(Required For Re-Initiate)</span></td>
                                         <td width="60%">
                                             <textarea name="remarks" class="text-input-big" tabindex="43" id="remarks" style="height:40px !important;width:250px"><?= isset($result->remarks) ? $result->remarks : '' ?></textarea>
 
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="20%" style="font-weight: bold;">Application File Upload:<span style="color:red">*</span></td>
+                                        <td width="30%"><span id="app_file"></span></td>
+                                        <td width="20%" style="font-weight: bold;"></td>
+                                        <td style="text-align: left;">
                                         </td>
                                     </tr>
 
